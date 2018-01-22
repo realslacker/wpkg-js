@@ -75,6 +75,14 @@
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
+		<xsd:attribute name="core" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Whether or not the operating systems is a Core
+					installation.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
 		<xsd:attribute name="makemodel" type="xsd:string">
 			<xsd:annotation>
 				<xsd:documentation>

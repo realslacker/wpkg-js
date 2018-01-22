@@ -580,6 +580,13 @@ format:
 				</xsd:documentation>
 			</xsd:annotation>
         </xsd:attribute>
+        <xsd:attribute name="core" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>True or false statement which matches Core
+edition status.
+				</xsd:documentation>
+			</xsd:annotation>
+        </xsd:attribute>
         <xsd:attribute name="makemodel" type="xsd:string">
 			<xsd:annotation>
 				<xsd:documentation>Regular expression which matches host make
@@ -717,6 +724,7 @@ http://www.microsoft.com/globaldev/reference/lcid-all.mspx
 							<xsd:enumeration value="hostname"></xsd:enumeration>
 							<xsd:enumeration value="architecture"></xsd:enumeration>
 							<xsd:enumeration value="os"></xsd:enumeration>
+							<xsd:enumeration value="core"></xsd:enumeration>
 							<xsd:enumeration value="makemodel"></xsd:enumeration>
 							<xsd:enumeration value="ipaddresses"></xsd:enumeration>
 							<xsd:enumeration value="domainname"></xsd:enumeration>

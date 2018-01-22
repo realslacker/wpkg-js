@@ -175,6 +175,9 @@ var message = "" +
 "	Use the specified operating system string instead of reading it from the \n" +
 "	executing host. \n" +
 "\n" +
+"/core:[<true>|<false>] \n" +
+"	Specify whether or not this is a Core installation. \n" +
+"\n" +
 "/makemodel:<hostmakemodel> \n" +
 "	Use the specified make and model string instead of reading it from the \n" +
 "	executing host. \n" +
@@ -551,6 +554,7 @@ var packagesRemoved = new Array();
 /** host properties used within script */
 var hostName = null;
 var hostOs = null;
+var hostCore = null;
 var hostMakeModel = null;
 var hostSerial = null;
 var domainName = null;
@@ -2719,6 +2723,27 @@ function getHostOS() {
 }
 
 /**
+ * Returns TRUE if the installed OS is a Core installtion, otherwise FALSE.
+ * 
+ * It might be overwritten by the /core:[true|false] switch.
+ * 
+ * Note: Some values might be empty.
+ * 
+ * @returns Host operating system specification as a plain string converted to
+ *          lower case letters to ease parsing
+ */
+function getHostCore() {
+	if (hostCore == null) {
+		if ( getFileSize( "%windir%\explorer.exe" ) > 0 ) {
+			hostCore = true;
+		} else {
+			hostCore = false;
+		}
+	}
+	return hostCore;
+}
+
+/**
  * Returns the make and model of the machine running this script. The return
  * format is:
  * 
@@ -2920,6 +2945,7 @@ function getHostInformation() {
 		hostAttributes.Add("hostname", getHostname());
 		hostAttributes.Add("architecture", getArchitecture());
 		hostAttributes.Add("os", getHostOS());
+		hostAttributes.Add("core", getHostCore());
 		hostAttributes.Add("makemodel", getHostMakeModel());
 		hostAttributes.Add("serial", getHostSerial());
 		hostAttributes.Add("ipaddresses", getIPAddresses());
@@ -2933,6 +2959,7 @@ function getHostInformation() {
 			+ "hostname='" + hostAttributes.Item("hostname") + "'\n"
 			+ "architecture='" + hostAttributes.Item("architecture") + "'\n"
 			+ "os='" + hostAttributes.Item("os") + "'\n"
+			+ "core='" + hostAttributes.Item("core") + "'\n"
 			+ "makemodel='" + hostAttributes.Item("makemodel") + "'\n"
 			+ "serial='" + hostAttributes.Item("serial") + "'\n"
 			+ "ipaddresses='" + hostAttributes.Item("ipaddresses").join(",") + "'\n"
@@ -5021,6 +5048,10 @@ function getSettingHostAttributes() {
 				setHostOS(value);
 				break;
 
+			case "core":
+				setHostCore(value);
+				break;
+
 			case "makemodel":
 				setHostMakeModel(value);
 				break;
@@ -7030,6 +7061,7 @@ function resetHostInformationCache() {
 	// Empty caches.
 	hostName = null;
 	hostOs = null;
+	hostCore = null;
 	hostMakeModel = null;
 	hostSerial = null;
 	domainName = null;
@@ -7147,6 +7179,16 @@ function setHostname(newHostname) {
  */
 function setHostOS(newHostOS) {
 	hostOs = newHostOS;
+}
+
+/**
+ * Set new host Core variable overwriting automatically-detected value.
+ * 
+ * @param newHostCore
+ *            host Core value
+ */
+function setHostCore(newHostCore) {
+	hostCore = newHostCore;
 }
 
 /**
@@ -8994,6 +9036,11 @@ function parseArguments(argv) {
 	// Parse OS override setting.
 	if (argn.Item("os") != null) {
 		setHostOS(argn("os"));
+	}
+
+	// Parse Core override setting.
+	if (argn.Item("core") != null) {
+		setHostCore(argn("core"));
 	}
 
 	// Parse makemodel override setting.

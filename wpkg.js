@@ -175,8 +175,8 @@ var message = "" +
 "	Use the specified operating system string instead of reading it from the \n" +
 "	executing host. \n" +
 "\n" +
-"/core:[<true>|<false>] \n" +
-"	Specify whether or not this is a Core installation. \n" +
+"/osinstallation:[core|full] \n" +
+"	Specify whether this is a Core or Full installation. \n" +
 "\n" +
 "/makemodel:<hostmakemodel> \n" +
 "	Use the specified make and model string instead of reading it from the \n" +
@@ -554,7 +554,7 @@ var packagesRemoved = new Array();
 /** host properties used within script */
 var hostName = null;
 var hostOs = null;
-var hostCore = null;
+var hostOsInstallation = null;
 var hostMakeModel = null;
 var hostSerial = null;
 var domainName = null;
@@ -2723,24 +2723,28 @@ function getHostOS() {
 }
 
 /**
- * Returns TRUE if the installed OS is a Core installtion, otherwise FALSE.
+ * Returns the operating system installation typeof the machine running this
+ * script. The return value is either 'core' or 'full'.
  * 
- * It might be overwritten by the /core:[true|false] switch.
+ * It might be overwritten by the /osinstallation:<osinstallation> switch.
  * 
  * Note: Some values might be empty.
  * 
  * @returns Host operating system specification as a plain string converted to
  *          lower case letters to ease parsing
  */
-function getHostCore() {
-	if (hostCore == null) {
-		if ( getFileSize( "%windir%\explorer.exe" ) > 0 ) {
-			hostCore = true;
+function getHostOsInstallation() {
+	if ( hostOsInstallation == null ) {
+	
+		var explorerSize = getFileSize( "%windir%\\explorer.exe" );
+		
+		if ( explorerSize > 0 ) {
+			hostOsInstallation = 'full';
 		} else {
-			hostCore = false;
+			hostOsInstallation = 'core';
 		}
 	}
-	return hostCore;
+	return hostOsInstallation;
 }
 
 /**
@@ -2945,7 +2949,7 @@ function getHostInformation() {
 		hostAttributes.Add("hostname", getHostname());
 		hostAttributes.Add("architecture", getArchitecture());
 		hostAttributes.Add("os", getHostOS());
-		hostAttributes.Add("core", getHostCore());
+		hostAttributes.Add("osinstallation", getHostOsInstallation());
 		hostAttributes.Add("makemodel", getHostMakeModel());
 		hostAttributes.Add("serial", getHostSerial());
 		hostAttributes.Add("ipaddresses", getIPAddresses());
@@ -2959,7 +2963,7 @@ function getHostInformation() {
 			+ "hostname='" + hostAttributes.Item("hostname") + "'\n"
 			+ "architecture='" + hostAttributes.Item("architecture") + "'\n"
 			+ "os='" + hostAttributes.Item("os") + "'\n"
-			+ "core='" + hostAttributes.Item("core") + "'\n"
+			+ "osinstallation='" + hostAttributes.Item("osinstallation") + "'\n"
 			+ "makemodel='" + hostAttributes.Item("makemodel") + "'\n"
 			+ "serial='" + hostAttributes.Item("serial") + "'\n"
 			+ "ipaddresses='" + hostAttributes.Item("ipaddresses").join(",") + "'\n"
@@ -5048,8 +5052,8 @@ function getSettingHostAttributes() {
 				setHostOS(value);
 				break;
 
-			case "core":
-				setHostCore(value);
+			case "osinstallation":
+				setHostOsInstallation(value);
 				break;
 
 			case "makemodel":
@@ -7061,7 +7065,7 @@ function resetHostInformationCache() {
 	// Empty caches.
 	hostName = null;
 	hostOs = null;
-	hostCore = null;
+	hostOsInstallation = null;
 	hostMakeModel = null;
 	hostSerial = null;
 	domainName = null;
@@ -7182,13 +7186,17 @@ function setHostOS(newHostOS) {
 }
 
 /**
- * Set new host Core variable overwriting automatically-detected value.
+ * Set new host OS Installation variable overwriting automatically-detected value.
  * 
- * @param newHostCore
- *            host Core value
+ * @param newHostOsInstallation
+ *            host OsInstallation value
  */
-function setHostCore(newHostCore) {
-	hostCore = newHostCore;
+function setHostOsInstallation(newHostOsInstallation) {
+	if ( newHostOsInstallation.toLowerCase() == 'core' ) {
+		hostOsInstallation = 'core';
+	} else {
+		hostOsInstallation = 'full';
+	}
 }
 
 /**
@@ -9038,9 +9046,9 @@ function parseArguments(argv) {
 		setHostOS(argn("os"));
 	}
 
-	// Parse Core override setting.
-	if (argn.Item("core") != null) {
-		setHostCore(argn("core"));
+	// Parse OS Installation override setting.
+	if (argn.Item("osinstallation") != null) {
+		setHostOsInstallation(argn("osinstallation"));
 	}
 
 	// Parse makemodel override setting.

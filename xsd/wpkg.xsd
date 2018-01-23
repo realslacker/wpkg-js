@@ -580,10 +580,10 @@ format:
 				</xsd:documentation>
 			</xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="core" type="xsd:string">
+        <xsd:attribute name="osinstallation" type="xsd:string">
 			<xsd:annotation>
-				<xsd:documentation>True or false statement which matches Core
-edition status.
+				<xsd:documentation>Specify whether this is a Core or Full
+installation.
 				</xsd:documentation>
 			</xsd:annotation>
         </xsd:attribute>
@@ -724,7 +724,7 @@ http://www.microsoft.com/globaldev/reference/lcid-all.mspx
 							<xsd:enumeration value="hostname"></xsd:enumeration>
 							<xsd:enumeration value="architecture"></xsd:enumeration>
 							<xsd:enumeration value="os"></xsd:enumeration>
-							<xsd:enumeration value="core"></xsd:enumeration>
+							<xsd:enumeration value="osinstallation"></xsd:enumeration>
 							<xsd:enumeration value="makemodel"></xsd:enumeration>
 							<xsd:enumeration value="ipaddresses"></xsd:enumeration>
 							<xsd:enumeration value="domainname"></xsd:enumeration>

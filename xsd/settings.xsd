@@ -75,11 +75,10 @@
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="core" type="xsd:string">
+		<xsd:attribute name="osinstallation" type="xsd:string">
 			<xsd:annotation>
 				<xsd:documentation>
-					Whether or not the operating systems is a Core
-					installation.
+					Specify whether this is a Core or Full installation.
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>

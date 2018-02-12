@@ -2754,8 +2754,8 @@ function getHostOsInstallation() {
  * <pre>
  * <CS-Manufacturer>, <CS-Model>
  * example output:
- * lenovo, 10b5000tus
- * hewlett-packard, probook 4550b
+ * lenovo, 10b5000tus, thinkpad t450s
+ * hewlett-packard, probook 4550b, null
  * </pre>
  * 
  * It might be overwritten by the /makemodel:<hostmakemodel> switch.
@@ -2776,7 +2776,7 @@ function getHostMakeModel() {
 				var csEnum = new Enumerator(colComputerSystem);
 				for (; !csEnum.atEnd(); csEnum.moveNext()) {
 					var csItem = csEnum.item();
-					var strMakeModel = trim(csItem.Manufacturer) + ", " + trim(csItem.Model);
+					var strMakeModel = trim(csItem.Manufacturer) + ", " + trim(csItem.Model) + ", " + trim(csItem.SystemFamily);
                     hostMakeModel = strMakeModel.toLowerCase();
                     dinfo("Host make and model: " + hostMakeModel);
 				}

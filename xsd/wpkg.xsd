@@ -590,11 +590,11 @@ installation.
         <xsd:attribute name="makemodel" type="xsd:string">
 			<xsd:annotation>
 				<xsd:documentation>Regular expression which matches host make
-and model. e.g. 'hewlett-packard, probook 4550b' Host
+and model. e.g. 'lenovo, 20f9cto1ww, thinkpad t460s' Host
 makemodel description string will have the following
 format:
 
-'[CS-Manufacturer], [CS-Model]'
+'[CS-Manufacturer], [CS-Model], [CS-SystemFamily]'
 				</xsd:documentation>
 			</xsd:annotation>
         </xsd:attribute>
